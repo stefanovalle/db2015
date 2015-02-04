@@ -6,7 +6,6 @@ include_once 'config.inc.php';
 <table>
 <thead>
 <td>ID</td>
-<td>Categoria</td>
 <td>Prodotto</td>
 <td>Prezzo</td>
 </thead>
@@ -21,7 +20,6 @@ foreach($db->query($sql) as $row){
 ?>
 <tr>
 <td><?php echo $row['id']; ?></td>
-<td><?php echo $row['categoria']; ?></td>
 <td><?php echo $row['nome']; ?></td>
 <td><?php echo $row['prezzo']; ?> &euro;</td>
 </tr>
