@@ -15,8 +15,9 @@ try {
 
 $db = new PDO($dsn , $username, $password);
 $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-$sql = 'SELECT * FROM PRODOTTI';
+$sql = '<< INSERIRE QUI LA QUERY >>';
 $start = microtime(true);
+/*
 foreach($db->query($sql) as $row){
 ?>
 <tr>
@@ -27,6 +28,7 @@ foreach($db->query($sql) as $row){
 </tr>
 <?php
 }
+*/
 $time_taken = microtime(true) - $start;
 }
 catch (PDOException $e) {
