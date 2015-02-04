@@ -8,6 +8,7 @@ include_once 'config.inc.php';
 <td>ID</td>
 <td>Prodotto</td>
 <td>Prezzo</td>
+<td>Azioni</td>
 </thead>
 <?php
 try {
@@ -22,6 +23,7 @@ foreach($db->query($sql) as $row){
 <td><?php echo $row['id']; ?></td>
 <td><?php echo $row['nome']; ?></td>
 <td><?php echo $row['prezzo']; ?> &euro;</td>
+<td><a href="./dettaglio.php?id=<?php echo $row['id']; ?>">Scheda</a></td>
 </tr>
 <?php
 }
