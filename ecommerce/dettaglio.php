@@ -8,8 +8,8 @@ $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 $sql = '<< INSERIRE QUI LA QUERY >>';
 $start = microtime(true);
 
-// $stmt = $db->query($sql);
-// $result = $stmt->fetch(PDO::FETCH_ASSOC);
+// $comando = $db->query($sql);
+// $riga = $comando->fetch(PDO::FETCH_ASSOC);
 
 ?>
 <h1>NOME PRODOTTO</h1>
