@@ -5,9 +5,13 @@ $id_prodotto = $_GET['id'];
 
 $db = new PDO($dsn , $username, $password);
 $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-$sql = '<< INSERIRE QUI LA QUERY >>';
+
+// INSERIRE AL POSTO DI <<QUERY>> LA QUERY PER LA SELEZIONE 
+// DEL SOLO PRODOTTO CON ID $id_prodotto
+$sql = '<<QUERY>>';
 $start = microtime(true);
 
+// COSA FANNO QUESTE DUE RIGHE?
 // $comando = $db->query($sql);
 // $riga = $comando->fetch(PDO::FETCH_ASSOC);
 

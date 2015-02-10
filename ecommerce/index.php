@@ -13,7 +13,6 @@ include_once 'config.inc.php';
 		<td>ID</td>
 		<td>Prodotto</td>
 		<td>Prezzo</td>
-		<td>Data Arrivo</td>
 		<td style="width: 140px">Azioni</td>
 	</thead>
 	<?php
@@ -21,7 +20,8 @@ include_once 'config.inc.php';
 	
 	$db = new PDO($dsn , $username, $password);
 	$db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-	$sql = 'SELECT * FROM PRODOTTI ORDER BY dataarrivo DESC';
+	// INSERIRE UNA QUERY DI SELEZIONE DI TUTTI I PRODOTTI AL POSTO DI <<QUERY>>
+	$sql = '<<QUERY>>';
 	$start = microtime(true);
 	foreach($db->query($sql) as $row){
 	?>
@@ -29,7 +29,6 @@ include_once 'config.inc.php';
 		<td><?php echo $row['id']; ?></td>
 		<td><?php echo $row['nome']; ?></td>
 		<td><?php echo $row['prezzo']; ?> &euro;</td>
-		<td><?php echo $row['dataarrivo']; ?> &euro;</td>
 		<td><a href="./dettaglio.php?id=<?php echo $row['id']; ?>">Scheda</a></td>
 	</tr>
 	<?php
