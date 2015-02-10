@@ -14,6 +14,8 @@ include_once 'config.inc.php';
 		<td>Prodotto</td>
 		<td>Prezzo</td>
 		<td>Data Arrivo</td>
+		<td>Categoria</td>
+		<td>Macrocategoria</td>
 		<td style="width: 140px">Azioni</td>
 	</thead>
 	<?php
@@ -21,7 +23,13 @@ include_once 'config.inc.php';
 	
 	$db = new PDO($dsn , $username, $password);
 	$db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-	$sql = 'SELECT * FROM PRODOTTI ORDER BY dataarrivo DESC';
+
+	$sql = 'SELECT prodotti.id, prodotti.nome, prodotti.prezzo, prodotti.dataarrivo, categorie.nome as cat, macrocategorie.nome as macrocat '.
+               'FROM PRODOTTI '.
+               'JOIN categorie on categorie.id = prodotti.categoria_id '.
+               'JOIN macrocategorie on macrocategorie.id = categorie.macrocategoria_id '.
+               'ORDER BY dataarrivo DESC';
+
 	$start = microtime(true);
 
         // Esegue la Query
@@ -38,7 +46,9 @@ include_once 'config.inc.php';
 		<td><?php echo $row['id']; ?></td>
 		<td><?php echo $row['nome']; ?></td>
 		<td><?php echo $row['prezzo']; ?> &euro;</td>
-		<td><?php echo $row['dataarrivo']; ?> &euro;</td>
+		<td><?php echo substr($row['dataarrivo'],0,16); ?> </td>
+		<td><?php echo $row['cat']; ?> </td>
+		<td><?php echo $row['macrocat']; ?> </td>
 		<td><a href="./dettaglio.php?id=<?php echo $row['id']; ?>">Scheda</a></td>
 	</tr>
 	<?php
