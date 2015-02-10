@@ -37,7 +37,7 @@ include_once 'config.inc.php';
 		<td><?php echo $row['id']; ?></td>
 		<td><?php echo $row['nome']; ?></td>
 		<td><?php echo $row['prezzo']; ?> &euro;</td>
-		<td><?php echo $row['dataarrivo']; ?> &euro;</td>
+		<td><?php echo $row['dataarrivo']; ?></td>
 		<td><a href="./dettaglio.php?id=<?php echo $row['id']; ?>">Scheda</a></td>
 	</tr>
 	<?php
