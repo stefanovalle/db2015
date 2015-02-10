@@ -1,6 +1,4 @@
 Esercizi da svolgere:
-- modifica la tabella categorie, rinominando il campo categoria in nome
-- modifica la tabella macrocategorie, rinominando il campo macrocategoria in nome
-- mostra nella lista prodotti (index.php) la categoria e la macrocategoria di ciascun prodotto
-- sulla scheda prodotto (dettaglio.php) mostra le varianti disponibili per ciascun prodotto
-- ogni volta che un utente accede alla pagina dettaglio.php, aumentare il contatore che mostra le visite ricevute da quel prodotto (aggiungere alla tabella prodotti un campo visite, di tipo intero, NOT NULL, default 0 - utilizzando il comando ALTER TABLE ADD COLUMN)
+- crea la tabella ordini, in cui inserire i prodotti acquistati dall'utente
+- crea una pagina admin.php che mostra una lista come index.php, ma che propone l'azione elimina (elimina.php) al click sulla stessa, anzichè visualizzare una scheda prodotto, lo stesso viene cancellato, e l'utente viene rimandato alla pagina con l'elenco prodotti (si veda http://php.net/manual/en/function.header.php)
+- a partire da index.php creare una pagina stats.php, che mostra il numero di acquisti fatto per ciascun prodotto, e ordina i prodotti per acquisti, in modo decrescente (il prodotto più acquistato per primo)
