@@ -12,15 +12,24 @@ $start = microtime(true);
 // $riga = $comando->fetch(PDO::FETCH_ASSOC);
 
 ?>
-<h1>NOME PRODOTTO</h1>
-<h2>DESCRIZIONE PRODOTTO</h2>
-<p>Prezzo: PREZZO</p>
-<p>Data Arrivo: DATA ARRIVO</p>
+<html>
+<head>
+        <link href="style.css" rel="stylesheet" type="text/css">
+</head>
+<body>
 
-<?php
-$time_taken = microtime(true) - $start;
-?>
-<br />
-<?php echo "Time taken: " . $time_taken; ?>
-<br />
-<a href="./">Ritorna all'indice</a>
+	<h1><?php echo $result["nome"]; ?></h1>
+	<h2><?php echo $result["descrizione"]; ?></h2>
+	<p class="detail">Prezzo: <?php echo $result["prezzo"]; ?></p>
+	<p class="detail">Data Arrivo: <?php echo $result["dataarrivo"]; ?></p>
+
+	<?php
+		$time_taken = microtime(true) - $start;
+	?>
+	<br />
+	<p><?php echo "Time taken: " . $time_taken; ?></p>
+	<br />
+	<br />
+	<a href="./">Ritorna all'indice</a>
+</body>
+</html>
