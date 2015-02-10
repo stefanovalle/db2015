@@ -8,7 +8,10 @@ $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 $sql = 'SELECT * FROM PRODOTTI WHERE id = ' . $id_prodotto;
 $start = microtime(true);
 
+// Esegue la query
 $stmt = $db->query($sql);
+
+//Recupera il risultato (fetch)
 $result = $stmt->fetch(PDO::FETCH_ASSOC);
 
 ?>
