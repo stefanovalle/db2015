@@ -24,11 +24,10 @@ include_once 'config.inc.php';
 	$db = new PDO($dsn , $username, $password);
 	$db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-	// Sostituire le parti racchiuse tra << e >>
-	$sql = 'SELECT prodotti.id, prodotti.nome, prodotti.prezzo, prodotti.dataarrivo, <<CAMPO CATEGORIA>>, <<CAMPO MACROCATEGORIA>> '.
+	$sql = 'SELECT prodotti.id, prodotti.nome, prodotti.prezzo, prodotti.dataarrivo, categorie.nome as cat, macrocategorie.nome as macrocat '.
                'FROM PRODOTTI '.
-               'JOIN <<TABELLA CATEGORIE> on <<CONDIZIONI JOIN>> '.
-               '<<SECONDO JOIN SU MACROCATEGORIE>> '.
+               'JOIN categorie on categorie.id = prodotti.categoria_id '.
+               'JOIN macrocategorie on macrocategorie.id = categorie.macrocategoria_id '.
                'ORDER BY dataarrivo DESC';
 
 	$start = microtime(true);
