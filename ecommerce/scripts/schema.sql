@@ -34,7 +34,7 @@ SET default_with_oids = false;
 
 CREATE TABLE categorie (
     id integer DEFAULT nextval('categorie_id_seq'::regclass) NOT NULL,
-    categoria character varying(50) NOT NULL,
+    nome character varying(50) NOT NULL,
     macrocategoria_id integer NOT NULL
 );
 
@@ -61,7 +61,7 @@ ALTER TABLE macrocategorie_id_seq OWNER TO ecommerce;
 
 CREATE TABLE macrocategorie (
     id integer DEFAULT nextval('macrocategorie_id_seq'::regclass) NOT NULL,
-    macrocategoria character varying(50) NOT NULL
+    nome character varying(50) NOT NULL
 );
 
 
