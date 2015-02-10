@@ -1,5 +1,4 @@
 Esercizi da svolgere:
-- mostra il contenuto della tabella prodotti, modificando opportunamente il file index.php
-- visualizza i dettagli del prodotto selezionato, modificando opportunamente la pagina dettaglio.php
-- sull'elenco prodotti (index.php) ordina i prodotti per data di arrivo (con il più nuovo in cima), e mostra la data di arrivo di ciascun prodotto
-
+- mostra nella lista prodotti (index.php) la categoria e la macrocategoria di ciascun prodotto
+- sulla scheda prodotto (dettaglio.php) mostra le varianti disponibili per ciascun prodotto
+- ogni volta che un utente accede alla pagina dettaglio.php, aumentare il contatore che mostra le visite ricevute da quel prodotto
