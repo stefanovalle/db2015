@@ -23,7 +23,15 @@ include_once 'config.inc.php';
 	// INSERIRE UNA QUERY DI SELEZIONE DI TUTTI I PRODOTTI AL POSTO DI <<QUERY>>
 	$sql = '<<QUERY>>';
 	$start = microtime(true);
-	foreach($db->query($sql) as $row){
+
+        // Esegue la Query
+        $stmt = $db->query($sql);
+
+        // Recupera tutti i risultati (fetchAll)
+        $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        // Passa uno a uno i risultati
+        foreach($result as $row){
 	?>
 	<tr>
 		<td><?php echo $row['id']; ?></td>
