@@ -1,67 +1,50 @@
 #!/usr/bin/php
 <?php
 include(__DIR__ . "/../config.inc.php");
+
 try {
-$db = new PDO($dsn , $username, $password);
-$db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+	$db = new PDO($dsn , $username, $password);
+	$db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-$db->exec("INSERT INTO macrocategorie (nome) VALUES ('Sport')");
-echo "Macrocategoria Sport Inserita\n";
+	// Procedura Creazione Prodotti
+	echo "Generazione di nomi random in corso...\n";
+	$namebase = array('pingo', 'pongo', 'bum', 'bam', 'foo',
+	'baz', 'bar', 'pogo', 'dogo', 'sole',
+	'luna', 'volo', 'air', 'fire', 'tee');
+	$prodottovariante = 0;
 
-$categorie = array('Pallacanestro',
-'Baseball',
-'Hockey',
-'Football',
-'Calcio',
-'Volley',
-'Tennis',
-'Sci',
-'Golf');
+	$db->beginTransaction();
+	$ai_prodId = array();
 
-$i_macroCat = $db->lastInsertId('macrocategorie_id_seq');
-$ai_catId = array();
+	for ($x=0; $x< 10000; $x++) {
+		// 7 è il numero delle categorie (ID da 1 a 7)
+		$categoria = rand(1, 7);
 
-for ($x=0; $x< count($categorie); $x++) {
-$db->exec("INSERT INTO categorie (nome, macrocategoria_id) VALUES ('".$categorie[$x]."', " . $i_macroCat . ")");
-$ai_catId[] = $db->lastInsertId('categorie_id_seq');
+		$prezzo = (rand(25, 3500) / 10);
+		$visti = rand (0, 5000);
+		$dataarrivo = '2015-01-'.rand(1,31).' '.rand(1,23).':'.rand(0,59);
+		$namebaseel = count($namebase) - 1;
+		$nome = $namebase[rand(0, $namebaseel)].$namebase[rand(0, $namebaseel)];
+		if (rand(0,1) == 1) {
+			$nome .= " ".$namebase[rand(0, $namebaseel)];
+		}
+		$nome = ucwords(strtolower($nome));
+		$db->exec("INSERT INTO prodotti (nome, descrizione, prezzo, visite, dataarrivo, categoria_id) VALUES ('". 
+		$nome ."','".$nome."',".$prezzo.",".$visti.",'".$dataarrivo."',".$categoria.")");
+		$ai_prodId[$x] = $db->lastInsertId('prodotti_id_seq');
 
-echo "Categoria ".$categorie[$x]." creata\n";
-}
+		echo "Prodotto ".$nome." creato\n";
 
-// Varianti
-// Prodotti
-echo "Tabella varianti/prodotto creata\n";
-$namebase = array('pingo', 'pongo', 'bum', 'bam', 'foo',
-'baz', 'bar', 'pogo', 'dogo', 'sole',
-'luna', 'volo', 'air', 'fire', 'tee');
-$prodottovariante = 0;
-$db->beginTransaction();
-
-$ai_prodId = array();
-
-for ($x=0; $x< 10000; $x++) {
-$categoria = $ai_catId[rand(2, (count($categorie)))-1];
-$prezzo = (rand(1, 200) * 10);
-$venduti = rand (0, 5000);
-$dataarrivo = '2014-05-07 '.rand(1,23).':'.rand(0,59);
-$namebaseel = count($namebase) - 1;
-$nome = $namebase[rand(0, $namebaseel)].$namebase[rand(0, $namebaseel)];
-if (rand(0,1) == 1) {
-$nome .= " ".$namebase[rand(0, $namebaseel)];
-}
-$db->exec("INSERT INTO prodotti (nome, prezzo, visite, dataarrivo, categoria_id) VALUES ('". 
-$nome ."',".$prezzo.",".$venduti.",'".$dataarrivo."',".$categoria.")");
-$ai_prodId[$x] = $db->lastInsertId('prodotti_id_seq');
-
-echo "Prodotto ".$nome." creato\n";
-
-$db->exec("INSERT INTO prodottivarianti (prodotto_id, variante_id) VALUES (".$ai_prodId[$x].",".rand(1,3).")");
-$db->exec("INSERT INTO prodottivarianti (prodotto_id, variante_id) VALUES (".$ai_prodId[$x].",".rand(4,5).")");
-echo "Varianti Prodotto ".$nome." create\n";
-
-}
+		for ($x = 1; $x<10; $x++) {
+			// Ci sono il 25% di possibilità per un articolo di essere disponibile in un certo colore
+			// Eccezione che per il nero, dove le possibilità sono il 55%
+			if (rand(0,100) > 75 || (1==$x && rand(0,100) > 45)) {
+				$db->exec("INSERT INTO prodottivarianti (prodotto_id, variante_id) VALUES (".$ai_prodId[$x].",".rand(1,3).")");
+			}
+		}
+		echo "Varianti per il Prodotto ".$nome." create\n";
+	}
 	$db->commit();
-}
-catch(PDOException $e) {
-echo 'Ahia! '.$e->getMessage()."\n";
+} catch(PDOException $e) {
+	echo 'Errore nel dialogo con il Database: '.$e->getMessage()."\n";
 }
