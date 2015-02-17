@@ -17,6 +17,7 @@ try {
 	$ai_prodId = array();
 
 	for ($x=0; $x< 10000; $x++) {
+		
 		// 7 è il numero delle categorie (ID da 1 a 7)
 		$categoria = rand(1, 7);
 
@@ -29,17 +30,20 @@ try {
 			$nome .= " ".$namebase[rand(0, $namebaseel)];
 		}
 		$nome = ucwords(strtolower($nome));
+
+		// L'ID è restituito dalla Sequenza (nextval)
 		$db->exec("INSERT INTO prodotti (nome, descrizione, prezzo, visite, dataarrivo, categoria_id) VALUES ('". 
 		$nome ."','".$nome."',".$prezzo.",".$visti.",'".$dataarrivo."',".$categoria.")");
-		$ai_prodId[$x] = $db->lastInsertId('prodotti_id_seq');
 
-		echo "Prodotto ".$nome." creato\n";
+		// Lastinsert ci torna l'ID associato dalla sequenza al prodotto
+		$prod_id = $db->lastInsertId('prodotti_id_seq');
+		echo "Prodotto ".$nome." (".$prod_id.") creato\n";
 
-		for ($x = 1; $x<10; $x++) {
+		for ($v = 1; $v<10; $v++) {
 			// Ci sono il 25% di possibilità per un articolo di essere disponibile in un certo colore
 			// Eccezione che per il nero, dove le possibilità sono il 55%
-			if (rand(0,100) > 75 || (1==$x && rand(0,100) > 45)) {
-				$db->exec("INSERT INTO prodottivarianti (prodotto_id, variante_id) VALUES (".$ai_prodId[$x].",".rand(1,3).")");
+			if (rand(0,100) > 75 || (1==$v && rand(0,100) > 45)) {
+				$db->exec("INSERT INTO prodottivarianti (prodotto_id, variante_id) VALUES (".$prod_id.",".$v.")");
 			}
 		}
 		echo "Varianti per il Prodotto ".$nome." create\n";
