@@ -16,7 +16,7 @@ try {
 	$db->beginTransaction();
 	$ai_prodId = array();
 
-	for ($x=0; $x< 10000; $x++) {
+	for ($x=0; $x< 200000; $x++) {
 		
 		// 7 è il numero delle categorie (ID da 1 a 7)
 		$categoria = rand(1, 7);
