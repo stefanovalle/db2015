@@ -1,24 +1,53 @@
 <?php
 
 include_once 'config.inc.php';
+
+require 'predis/autoload.php';
+Predis\Autoloader::register();
+
+$redis = new Predis\Client();  
+
 $id_prodotto = $_GET['id'];
 
 $db = new PDO($dsn , $username, $password);
 $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-// Query di aggiornamento (UPDATE) delle visite
 $db->exec("UPDATE prodotti SET visite = visite+1 WHERE id='" . $id_prodotto . "'");
 
-// Query di selezione, per il prodotto e le relative varianti
-$sql = 'SELECT prodotti.id, prodotti.nome, prodotti.descrizione, prodotti.prezzo, prodotti.dataarrivo, prodotti.visite, varianti.nome as variante '.
+$start = microtime(true);
+
+if (!$redis->exists($id_prodotto)) {
+  echo "Not cached<br />";
+
+  // Query di aggiornamento (UPDATE) delle visite
+
+  // Query di selezione, per il prodotto e le relative varianti
+  $sql = 'SELECT prodotti.id, prodotti.nome, prodotti.descrizione, prodotti.prezzo, prodotti.dataarrivo, prodotti.visite, varianti.nome as variante '.
        'FROM PRODOTTI JOIN prodottivarianti on prodotti.id = prodottivarianti.prodotto_id '.
        'JOIN varianti on prodottivarianti.variante_id = varianti.id '.
        'WHERE prodotti.id = ' . $id_prodotto;
 
-$start = microtime(true);
+  $stmt = $db->query($sql);
 
-$stmt = $db->query($sql);
-$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+  // Viene recuperato il primo record, con le informazioni del prodotto
+  $row = $stmt->fetch();
+  $item = $row;
+
+  // Vengono recuperate le varianti
+  $varianti = $row['variante'];
+  while ($row = $stmt->fetch()) {
+	$varianti .= ', ' . $row['variante'];
+  }
+  $item['variante'] = $varianti;
+
+  $data = json_encode($item, true);
+  $redis->set($id_prodotto, $data) or die ("Failed to save data at the server");
+
+} else {
+  echo "Cached!<br />";
+  $item = json_decode($redis->get($id_prodotto), true);
+}
+
 
 ?>
 <html>
@@ -27,23 +56,13 @@ $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
 </head>
 <body>
 
-	<h1><?php echo $result[0]["nome"]; ?></h1>
-	<h2><?php echo $result[0]["descrizione"]; ?></h2>
-	<p class="detail"><strong>Visite: <?php echo $result[0]["visite"]; ?></strong></p>
-	<p class="detail">Prezzo: <?php echo $result[0]["prezzo"]; ?> &euro;</p>
-	<p class="detail">Data Arrivo: <?php echo $result[0]["dataarrivo"]; ?></p>
-	<p class="detail">Varianti Disponibili: 
-	<?php 
-	$current = 0;
-	foreach($result as $row) {
-		      if (0 != $current++) {
-                           echo ", ";
-                      }
-                      echo $row["variante"];
-	       }
-        ?>
+	<h1><?php echo $item["nome"]; ?></h1>
+	<h2><?php echo $item["descrizione"]; ?></h2>
+	<p class="detail"><strong>Visite: <?php echo $item["visite"]; ?></strong></p>
+	<p class="detail">Prezzo: <?php echo $item["prezzo"]; ?> &euro;</p>
+	<p class="detail">Data Arrivo: <?php echo $item["dataarrivo"]; ?></p>
+	<p class="detail">Varianti Disponibili: <?php  echo $item["variante"]; ?></p>
 	</p>
-
 	<?php
 		$time_taken = microtime(true) - $start;
 	?>
