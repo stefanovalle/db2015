@@ -5,7 +5,8 @@ include_once 'config.inc.php';
 require 'predis/autoload.php';
 Predis\Autoloader::register();
 
-$redis = new Predis\Client();  
+// Istanziare un client Redis (Predis)
+// $redis = new XXX;  
 
 $id_prodotto = $_GET['id'];
 
@@ -16,7 +17,8 @@ $db->exec("UPDATE prodotti SET visite = visite+1 WHERE id='" . $id_prodotto . "'
 
 $start = microtime(true);
 
-if (!$redis->exists($id_prodotto)) {
+// Verificare se l'oggetto con chiave $id_prodotto esiste in Redis (usare $redis)
+//if () {
   echo "Not cached<br />";
 
   // Query di aggiornamento (UPDATE) delle visite
@@ -41,12 +43,15 @@ if (!$redis->exists($id_prodotto)) {
   $item['variante'] = $varianti;
 
   $data = json_encode($item, true);
-  $redis->set($id_prodotto, $data) or die ("Failed to save data at the server");
 
-} else {
-  echo "Cached!<br />";
-  $item = json_decode($redis->get($id_prodotto), true);
-}
+  // Settare nella cache l'item serializzato (vedi sotto esempio deserializzazione)
+  // $redis->set(XXX) or die ("Failed to save data at the server");
+
+//} else {
+//  echo "Cached!<br />";
+// Prelevare item dalla cache di Redis...
+//  $item = json_decode(XXX, true);
+//}
 
 
 ?>
