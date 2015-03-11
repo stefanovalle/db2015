@@ -28,7 +28,7 @@ include_once 'config.inc.php';
                'FROM PRODOTTI '.
                'JOIN categorie on categorie.id = prodotti.categoria_id '.
                'JOIN macrocategorie on macrocategorie.id = categorie.macrocategoria_id '.
-               'ORDER BY dataarrivo DESC, macrocat ASC, cat ASC';
+               'ORDER BY dataarrivo DESC, macrocat ASC, cat ASC LIMIT 25';
 
 	$start = microtime(true);
 
