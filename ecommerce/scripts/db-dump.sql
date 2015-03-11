@@ -14,7 +14,6 @@ SET search_path = public, pg_catalog;
 --
 -- Name: categorie_id_seq; Type: SEQUENCE; Schema: public; Owner: ecommerce
 --
-
 CREATE SEQUENCE categorie_id_seq
     START WITH 1
     INCREMENT BY 1
@@ -151,11 +150,22 @@ ALTER TABLE ordini_id_seq OWNER TO ecommerce;
 ALTER SEQUENCE ordini_id_seq OWNED BY ordini.id;
 
 
---
+CREATE SEQUENCE ordiniprodottivarianti_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+
+ALTER TABLE ordiniprodottivarianti_id_seq OWNER TO ecommerce;
+
 -- Name: ordiniprodottivarianti; Type: TABLE; Schema: public; Owner: ecommerce; Tablespace: 
 --
 
 CREATE TABLE ordiniprodottivarianti (
+    id integer DEFAULT nextval('ordiniprodottivarianti_id_seq'::regclass) NOT NULL,
     ordine_id integer NOT NULL,
     prodotto_id integer NOT NULL,
     variante_id integer,
@@ -167,9 +177,6 @@ CREATE TABLE ordiniprodottivarianti (
 
 ALTER TABLE ordiniprodottivarianti OWNER TO ecommerce;
 
---
--- Name: prodotti_id_seq; Type: SEQUENCE; Schema: public; Owner: ecommerce
---
 
 CREATE SEQUENCE prodotti_id_seq
     START WITH 1
@@ -180,6 +187,7 @@ CREATE SEQUENCE prodotti_id_seq
 
 
 ALTER TABLE prodotti_id_seq OWNER TO ecommerce;
+
 
 --
 -- Name: prodotti; Type: TABLE; Schema: public; Owner: ecommerce; Tablespace: 
@@ -337,11 +345,11 @@ SELECT pg_catalog.setval('ordini_id_seq', 4, true);
 -- Data for Name: ordiniprodottivarianti; Type: TABLE DATA; Schema: public; Owner: ecommerce
 --
 
-INSERT INTO ordiniprodottivarianti VALUES (1, 1, 8, 39.00, 1, 'Pallone da Basket Molten (Pelle)');
-INSERT INTO ordiniprodottivarianti VALUES (2, 4, NULL, 6.00, 1, 'Cartina di Cuba');
-INSERT INTO ordiniprodottivarianti VALUES (3, 2, 8, 35.00, 1, 'Pallone da Basket Spalding (Pelle)');
-INSERT INTO ordiniprodottivarianti VALUES (3, 12, 3, 14.00, 4, 'USB Pen 8GB (Blue)');
-INSERT INTO ordiniprodottivarianti VALUES (4, 7, 7, 4200.00, 1, 'Nikon D5600 (Argento)');
+INSERT INTO ordiniprodottivarianti VALUES (1,1, 1, 8, 39.00, 1, 'Pallone da Basket Molten (Pelle)');
+INSERT INTO ordiniprodottivarianti VALUES (2,2, 4, NULL, 6.00, 1, 'Cartina di Cuba');
+INSERT INTO ordiniprodottivarianti VALUES (3,3, 2, 8, 35.00, 1, 'Pallone da Basket Spalding (Pelle)');
+INSERT INTO ordiniprodottivarianti VALUES (4,3, 12, 3, 14.00, 4, 'USB Pen 8GB (Blue)');
+INSERT INTO ordiniprodottivarianti VALUES (5,4, 7, 7, 4200.00, 1, 'Nikon D5600 (Argento)');
 
 
 --
@@ -465,7 +473,7 @@ ALTER TABLE ONLY ordini
 --
 
 ALTER TABLE ONLY ordiniprodottivarianti
-    ADD CONSTRAINT ordiniprodottivarianti_pkey PRIMARY KEY (ordine_id, prodotto_id);
+    ADD CONSTRAINT ordiniprodottivarianti_pkey PRIMARY KEY (id);
 
 
 --
