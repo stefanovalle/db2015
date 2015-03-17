@@ -14,6 +14,12 @@ $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
 $db->exec("UPDATE prodotti SET visite = visite+1 WHERE id='" . $id_prodotto . "'");
 
+// Qui utilizziamo pattern pub/sub
+$redis->publish("visitatori", "qualcuno sta guardando l'oggetto ". $item['nome']);
+
+// Come comunichiamo alla nostra coda "magazzino" (in ascolto via node) il nome del prodotto visualizzato?
+// $redis->???("magazzino", $item['nome']);
+
 $start = microtime(true);
 
 if (!$redis->exists($id_prodotto)) {
