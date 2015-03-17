@@ -52,7 +52,7 @@ if (!$redis->exists($id_prodotto)) {
 $redis->publish("visitatori", "qualcuno sta guardando l'oggetto ". $item['nome']);
 
 // Come comunichiamo alla nostra coda "magazzino" (in ascolto via node) il nome del prodotto visualizzato?
-// $redis->???("magazzino", $item['nome']);
+$redis->lPush("magazzino", $item['nome']);
 
 ?>
 <html>
