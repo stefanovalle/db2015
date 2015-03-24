@@ -30,7 +30,7 @@ $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
 	<h1><?php echo $result[0]["nome"]; ?></h1>
 	<h2><?php echo $result[0]["descrizione"]; ?></h2>
 	<p class="detail"><strong>Visite: <?php echo $result[0]["visite"]; ?></strong></p>
-	<p class="detail">Prezzo: <?php echo $result[0]["prezzo"]; ?> &euro;</p>
+	<p class="detail">Prezzo: <?php echo $result[0]["prezzo"]; ?> &euro;<
 	<p class="detail">Data Arrivo: <?php echo $result[0]["dataarrivo"]; ?></p>
 	<p class="detail">Varianti Disponibili: 
 	<?php 
@@ -47,6 +47,27 @@ $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
 	<?php
 		$time_taken = microtime(true) - $start;
 	?>
+	<br />
+	<form action="ordina.php" method="post">
+		<input type="hidden" name="id" value="<?php echo $id_prodotto ?>" />
+		<p>Quantita 
+			<select name="quantita">
+				<?php for($i=1; $i <= 10; $i++) {
+					echo '<option>' . $i . '</option>';
+				} ?>
+			</select>
+		</p>
+		<p>Variante
+			<select name="variante">
+	<?php 
+	foreach($result as $row) {
+                      echo '<option>' . $row["variante"] . '</option>';
+	       }
+        ?>
+			</select>
+		</p>
+		<p><input type="submit" value="Ordina prodotto" /></p>
+	</form>
 	<br />
 	<p><?php echo "Time taken: " . $time_taken; ?></p>
 	<br />
